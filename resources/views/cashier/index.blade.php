@@ -116,7 +116,9 @@
                        }
                    })
                 }
-             
+                $.get('/cashier/getTable', function(data){
+                    $("#table-detail").html(data)
+                })
             })
             $("#order-detail").on('click', '.btn-order', function(){
                 var sale_id = $(this).attr('id')
@@ -147,7 +149,9 @@
                         $("#order-detail").html(data)
                     }
                 })
-              
+                $.get('/cashier/getTable', function(data){
+                    $("#table-detail").html(data)
+                })
             })
             $("#order-detail").on('click', '.btn-payment', function(){
                 var totalAmount = $(this).attr('totalAmount')
