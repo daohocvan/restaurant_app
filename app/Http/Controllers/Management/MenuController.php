@@ -16,7 +16,7 @@ class MenuController extends Controller
      */
     public function index()
     {
-        $menus = Menu::all();
+        $menus = Menu::all()->sortBy('id');
         return view("management.menu", compact('menus'));
     }
 

@@ -19,7 +19,7 @@ class CashierController extends Controller
     }
 
     public function getTables(){
-        $tables = Table::all();
+        $tables = Table::all()->sortBy('id');
         $html = '';
         foreach($tables as $table){
             $html .= '<div class="col-md-2 mb-4">';
@@ -131,7 +131,7 @@ class CashierController extends Controller
                 <tr>
                     <td>' .$saleDetail->id .'</td>
                     <td>' .$saleDetail->menu_name .'</td>
-                    <td>' .$saleDetail->quantity .'</td>
+                    <td> <button id="' .$saleDetail->id .'"class="btn btn-primary btn-sm btn-decrease-quantity">-</button>' .$saleDetail->quantity .' <button id="' .$saleDetail->id .'"class="btn btn-primary btn-sm btn-increase-quantity">+</button></td>
                     <td>' .$saleDetail->menu_price .'</td>
                     <td>' .$saleDetail->menu_price * $saleDetail->quantity .'</td>';
                     if($saleDetail->status == 'noConfirm'){
@@ -210,5 +210,47 @@ class CashierController extends Controller
         $saleDetails = SaleDetail::where('sale_id', $sale_id)->get();
         return view('cashier.showReceipt', compact('sale', 'saleDetails'));
 
+    }
+
+    public function increaseQuantity(Request $request){
+        $sale_detail_id = $request->sale_detail_id;
+        $saleDetail = SaleDetail::where('id', $sale_detail_id)->first();
+        $saleDetail->quantity += 1;
+        $saleDetail->save();
+
+        $sale = Sale::where('id', $saleDetail->sale_id)->first();
+        $sale->total_price += $saleDetail->menu_price;
+        $sale->save();
+        $html = $this->getSaleDetails($saleDetail->sale_id);
+        return $html;
+    }
+
+    public function decreaseQuantity(Request $request){
+        $sale_detail_id = $request->sale_detail_id;
+        $saleDetail = SaleDetail::where('id', $sale_detail_id)->first();
+        $sale = Sale::where('id', $saleDetail->sale_id)->first();
+        if($saleDetail->quantity == 1){
+            $saleDetail->delete();
+            $count = SaleDetail::where('sale_id',  $saleDetail->sale_id)->count();
+            
+            if($count == 0){
+                $html = "Not found sale detail";
+                $sale->delete();
+                Table::where('id',$sale->table_id)->update(['status' => 'available']);
+            }
+            else{
+                $sale->total_price -= $saleDetail->menu_price;
+                $sale->save();
+                $html = $this->getSaleDetails($saleDetail->sale_id);
+            }
+        }
+        else{
+            $saleDetail->quantity -= 1;
+            $saleDetail->save();
+            $sale->total_price -= $saleDetail->menu_price;
+            $sale->save();
+            $html = $this->getSaleDetails($saleDetail->sale_id);
+        }
+        return $html;
     }
 }

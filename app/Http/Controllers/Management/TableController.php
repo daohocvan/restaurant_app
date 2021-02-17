@@ -14,7 +14,7 @@ class TableController extends Controller
      */
     public function index()
     {
-        $tables = Table::all();
+        $tables = Table::all()->sortBy('id');
         return view('management.table', compact('tables'));
     }
 

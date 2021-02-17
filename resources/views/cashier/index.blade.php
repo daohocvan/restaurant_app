@@ -64,6 +64,8 @@
     <script>
         $(document).ready(function(){
             $("#table-detail").hide()
+
+            //Show Tables
             $("#btn-show-tables").click(function(){
                 if($("#table-detail").is(":hidden")){
                     $.get('/cashier/getTable', function(data){
@@ -78,6 +80,8 @@
                 }
               
             })
+
+            //Get menu by category id
             $(".nav-link").click(function(){
                 var id = $(this).attr('id');
                 $.get('/cashier/getMenuByCategory/'+ id, function(data){
@@ -87,6 +91,7 @@
             var table_id = ''
             var table_name = ''
             
+            //Table detail
             $("#table-detail").on('click', '.btn-table', function(){
                 table_id = $(this).attr('id')
                 table_name = $(this).attr('name')
@@ -95,6 +100,8 @@
                     $("#order-detail").html(data)
                 })
             })
+
+            //Order food
             $("#list-menu").on('click', '.btn-menu', function(){
                 if(table_id == ""){
                     alert("You need to select table")
@@ -120,6 +127,8 @@
                     $("#table-detail").html(data)
                 })
             })
+
+            //Cofirm order status
             $("#order-detail").on('click', '.btn-order', function(){
                 var sale_id = $(this).attr('id')
                 $.ajax({
@@ -136,6 +145,8 @@
                 })
                
             })
+
+            //Delete order
             $("#order-detail").on('click', '.btn-delete-saledetail', function(){
                var sale_detail_id = $(this).attr('id')
                 $.ajax({
@@ -153,12 +164,51 @@
                     $("#table-detail").html(data)
                 })
             })
+
+            //increase Quantity
+            $("#order-detail").on('click', '.btn-increase-quantity', function(){
+               var sale_detail_id = $(this).attr('id')
+                $.ajax({
+                    'type': 'post',
+                    'url': '/cashier/increaseQuantity',
+                    'data': {
+                        "_token": $('meta[name="csrf-token"]').attr('content'),
+                        "sale_detail_id": sale_detail_id
+                    },
+                    success: function(data){
+                        $("#order-detail").html(data)
+                    }
+                })
+            })
+
+            //Decrease Quantity
+            $("#order-detail").on('click', '.btn-decrease-quantity', function(){
+               var sale_detail_id = $(this).attr('id')
+                $.ajax({
+                    'type': 'post',
+                    'url': '/cashier/decreaseQuantity',
+                    'data': {
+                        "_token": $('meta[name="csrf-token"]').attr('content'),
+                        "sale_detail_id": sale_detail_id
+                    },
+                    success: function(data){
+                        $("#order-detail").html(data)
+                    }
+                })
+                $.get('/cashier/getTable', function(data){
+                    $("#table-detail").html(data)
+                })
+            })
+
+            //Payment
             $("#order-detail").on('click', '.btn-payment', function(){
                 var totalAmount = $(this).attr('totalAmount')
                 $(".total").html('Total Amount: $' + totalAmount)
                 $('#recieved-amount').val('')
                 $(".changeAmount").html('')
             })
+
+            //Recieved amount
             $('#recieved-amount').keyup(function(){
                 var totalAmount = $('.btn-payment').attr('totalAmount')
                 var recievedAmout = $(this).val()
@@ -170,6 +220,8 @@
                     $(".changeAmount").html('')
                 }
             })
+
+            //Save payment
             $('.btn-save-payment').click(function(){
                 var recievedAmout = $('#recieved-amount').val()
                 var paymentType = $('#payment-type').val()
@@ -187,7 +239,6 @@
                         window.location.href = data
                     }
                 })
-
             })
         })
     </script>
