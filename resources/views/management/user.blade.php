@@ -4,47 +4,50 @@
         <div class="row justify-content-center">
             @include('management.inc.sidebar')
             <div class="col-md-8">
-                <i class="fas fa-hamburger"></i> Menu
-                <a href="/management/menu/create" class="btn btn-success btn-sm float-right"><i class="fas fa-plus"></i> Create Menu</a>
+                <i class="fas fa-user"></i> User
+                <a href="/management/user/create" class="btn btn-success btn-sm float-right"><i class="fas fa-plus"></i> Create User</a>
                 <hr>
                 @if(Session()->has('status'))
+                    @if(Session()->get('status') != 'fail')
                     <div class="alert alert-success">
                         <button type="button" class="close" data-dismiss="alert">x</button>
                         {{Session()->get('status')}}
                     </div>
+                    @else
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">x</button>
+                        Delete failed
+                    </div>
+                    @endif
                 @endif
                 <table class="table table-bordered table-hover">
                     <thead>
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Image</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Category</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Email</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
                     </tr>
                     </thead>
                     <tbody>
-                        @foreach($menus as $menu)
+                        @foreach($users as $user)
                         <tr>
-                            <th>{{$menu->id}}</th>
-                            <td>{{$menu->name}}</td>
-                            <td>{{$menu->price}}</td>
-                            <td><img src="{{asset('menu_images')}}/{{$menu->image}}" alt="{{$menu->image}}" class="menu_image"></td>
-                            <td>{{$menu->description}}</td>
-                            <td>{{$menu->category->name}}</td>
-                            <td><a href="/management/menu/{{$menu->id}}/edit" class="btn btn-success">Edit</a></td>
+                            <th>{{ $user->id }}</th>
+                            <td>{{ $user->name }}</td>
+                            <td>{{$user->role }}</td>
+                            <td>{{$user->email }}</td>
+                            <td><a href="/management/user/{{$user->id}}/edit" class="btn btn-success">Edit</a></td>
                             <td>
-                                <form action="/management/menu/{{$menu->id}}" method="post">
+                                <form action="/management/user/{{$user->id}}" method="post">
                                     @csrf
                                     @method('DELETE')
                                     <input type="submit" value="Delete" class="btn btn-danger">
                                 </form>
                             </td>
                         </tr>
-                        @endforeach
+                       @endforeach
                     </tbody>
                 </table>
 

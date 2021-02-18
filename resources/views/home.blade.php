@@ -13,8 +13,9 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
+                    
                     <div class="row text-center">
+                        @if(Auth::user()->isAdmin())
                         <div class="col-sm-4">
                             <a href="/management">
                                 <h4>Management</h4>
@@ -22,6 +23,7 @@
                             </a>
 
                         </div>
+                        @endif
                         <div class="col-sm-4">
                             <a href="/cashier">
                                 <h4>Cashier</h4>
@@ -29,6 +31,7 @@
                             </a>
 
                         </div>
+                        @if(Auth::user()->isAdmin())
                         <div class="col-sm-4">
                             <a href="/report">
                                 <h4>Report</h4>
@@ -36,6 +39,7 @@
                             </a>
 
                         </div>
+                        @endif
                     </div>
                 </div>
             </div>

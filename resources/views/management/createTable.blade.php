@@ -4,7 +4,7 @@
         <div class="row justify-content-center">
             @include('management.inc.sidebar')
             <div class="col-md-8">
-                <i class="fas fa-align-justify"></i> Create Table
+                <i class="fas fa-plus"></i> Create Table
                 <hr>
                 @if($errors->any())
                     <div class="alert alert-danger">

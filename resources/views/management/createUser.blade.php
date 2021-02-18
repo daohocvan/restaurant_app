@@ -4,7 +4,7 @@
         <div class="row justify-content-center">
             @include('management.inc.sidebar')
             <div class="col-md-8">
-                <i class="fas fa-plus"></i> Create Menu
+                <i class="fas fa-plus"></i> Create User
                 <hr>
                 @if($errors->any())
                     <div class="alert alert-danger">
@@ -15,31 +15,25 @@
                         </ul>
                     </div>
                 @endif
-                <form action="/management/menu" method="post" enctype="multipart/form-data">
+                <form action="/management/user" method="post">
                     @csrf
                     <div class="form-group">
-                        <label for="name">Menu Name</label>
+                        <label for="name">Name</label>
                         <input type="text" name="name" class="form-control">
-
                     </div>
                     <div class="form-group">
-                        <label for="price">Price</label>
-                        <input type="text" name="price" class="form-control">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="image">Image</label>
-                        <input class="form-control" type="file" name="image">
+                        <label for="name">Email</label>
+                        <input type="email" name="email" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="description">Description</label>
-                        <input class="form-control" type="text" name="description">
-                    </div>
-                    <div class="form-group">
-                        <label for="category_id">Category Name</label>
-                        <select name="category_id" class="form-control">
-                            @foreach($categories as $category)
-                            <option value="{{$category->id}}">{{$category->name}}</option>
-                            @endforeach
+                        <label for="role">Role</label>
+                        <select name="role" class="form-control">
+                            <option value="admin">Admin</option>
+                            <option value="cashier">Cashier</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-outline-danger">Save</button>
