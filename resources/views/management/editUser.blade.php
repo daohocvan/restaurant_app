@@ -39,9 +39,7 @@
                     </div>
                     <button type="submit" class="btn btn-outline-danger" >Update</button>
                 </form>
-
             </div>
         </div>
-
     </div>
 @endsection
