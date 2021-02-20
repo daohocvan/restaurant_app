@@ -126,7 +126,6 @@ class CashierController extends Controller
         <tbody>';
         $showBtnPayment = true;
         foreach ($saleDetails as $saleDetail){
-
             $html .= '
                 <tr>
                     <td>' .$saleDetail->id .'</td>
