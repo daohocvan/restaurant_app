@@ -43,4 +43,5 @@ Route::middleware(['auth', 'VerifyAdmin'])->group(function(){
     Route::resource('/management/user', 'Management\UserController');
     Route::resource('/report', 'Report\ReportController');
     Route::get('/report/show', 'Report\ReportController@show');
+    Route::get('/report/show/export', 'Report\ReportController@export');
 });

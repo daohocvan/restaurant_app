@@ -23,7 +23,7 @@ class CashierController extends Controller
         $html = '';
         foreach($tables as $table){
             $html .= '<div class="col-md-2 mb-4">';
-            $html .= 
+            $html .=
             '<button class="btn btn-primary btn-table" id="' . $table->id .'" name = "' .$table->name .'" >
             <img class="table-image" src="'.url('/images/table.svg').'"/>
             <br>';
@@ -86,11 +86,11 @@ class CashierController extends Controller
         $saleDetail->menu_price = $menu->price;
         $saleDetail->quantity = $request->quantity;
         $saleDetail->save();
-        
+
         $sale->total_price += ($request->quantity * $menu->price);
         $sale->save();
         $html = $this->getSaleDetails($sale_id);
-       
+
         return $html;
     }
 
@@ -126,7 +126,7 @@ class CashierController extends Controller
         <tbody>';
         $showBtnPayment = true;
         foreach ($saleDetails as $saleDetail){
-            
+
             $html .= '
                 <tr>
                     <td>' .$saleDetail->id .'</td>
@@ -167,11 +167,11 @@ class CashierController extends Controller
     public function deleteSaleDetail(Request $request){
         $sale_detail_id = $request->sale_detail_id;
         $sale_detail = SaleDetail::find($sale_detail_id);
-        
+
         $sale_id = $sale_detail->sale_id;
         $menu_price = $sale_detail->menu_price * $sale_detail->quantity;
         $sale_detail->delete();
-        
+
         $sale = Sale::find($sale_id);
         $sale->total_price -= $menu_price;
         $sale->save();
@@ -201,7 +201,7 @@ class CashierController extends Controller
         $sale->save();
 
         $table = Table::where('id', $sale->table_id)->update(['status' => 'available']);
-        
+
         return "/cashier/showReceipt/" .$sale_id;
     }
 
@@ -209,7 +209,6 @@ class CashierController extends Controller
         $sale = Sale::find($sale_id);
         $saleDetails = SaleDetail::where('sale_id', $sale_id)->get();
         return view('cashier.showReceipt', compact('sale', 'saleDetails'));
-
     }
 
     public function increaseQuantity(Request $request){
@@ -232,7 +231,7 @@ class CashierController extends Controller
         if($saleDetail->quantity == 1){
             $saleDetail->delete();
             $count = SaleDetail::where('sale_id',  $saleDetail->sale_id)->count();
-            
+
             if($count == 0){
                 $html = "Not found sale detail";
                 $sale->delete();

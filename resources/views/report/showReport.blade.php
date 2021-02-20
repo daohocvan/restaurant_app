@@ -11,7 +11,7 @@
                             @endforeach
                         </ul>
                     </div>
-                @endif  
+                @endif
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/">Main Functions</a></li>
@@ -55,7 +55,7 @@
                     <tr>
                         <th></th>
                         <th>Menu ID</th>
-                        <th>Menu</th>   
+                        <th>Menu</th>
                         <th>Quantity</th>
                         <th>Price</th>
                         <th>Total price</th>
@@ -74,6 +74,11 @@
             </tbody>
           </table>
           {{$sales->appends($_GET)->links()}}
+          <form action="/report/show/export" method="get">
+            <input type="hidden" name="dateStart" value={{$dateStart}}>
+            <input type="hidden" name="dateEnd" value={{$dateEnd}}>
+            <input type="submit" value="Export to Excel" class="btn btn-success">
+          </form>
           @else
           <div class="alert alert-danger" role="alert">
             Not found report
